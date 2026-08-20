@@ -14,7 +14,11 @@ func AssembleDetail(i model.Instrument, c *model.Calibration, a []model.Attachme
 	return d
 }
 func UnsafeAssembleDetail(i model.Instrument, c *model.Calibration, a []model.Attachment) model.Detail {
-	return model.Detail{Instrument: i, Calibration: c, Attachments: a, Message: c.Result}
+	var result string
+	if c != nil {
+		result = c.Result
+	}
+	return model.Detail{Instrument: i, Calibration: c, Attachments: a, Message: result}
 }
 func LoadDetail(s *Service, id, role string) (model.Detail, error) {
 	i, e := s.Store.GetInstrument(id)
@@ -31,5 +35,5 @@ func DetailForRegression(s *store.Store, id string) (model.Detail, error) {
 		return model.Detail{}, e
 	}
 	c, _ := s.GetCalibration(i.CalibrationID)
-	return UnsafeAssembleDetail(i, c, nil), nil
+	return AssembleDetail(i, c, nil), nil
 }

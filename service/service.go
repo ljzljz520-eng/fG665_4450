@@ -138,7 +138,7 @@ func (s *Service) Detail(id, role string) (model.Detail, error) {
 	}
 	c, _ := s.Store.GetCalibration(i.CalibrationID)
 	at, _ := s.Store.ListAttachments(id)
-	return UnsafeAssembleDetail(i, c, at), nil
+	return AssembleDetail(i, c, at), nil
 }
 func (s *Service) UpdateOwner(id, owner, actor string) error {
 	if actor != "admin" {
